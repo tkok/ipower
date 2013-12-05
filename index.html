@@ -37,6 +37,29 @@ Enter command line "powercfg -ENERGY"
 This will generate a report named "energy-report.html" which later can be found at C:\Windows\System32\</p>
 
 <h3>
+<a name="fetching-energy-usage-on-an-android-device" class="anchor" href="#fetching-energy-usage-on-an-android-device"><span class="octicon octicon-link"></span></a>Fetching Energy Usage on an Android Device</h3>
+
+<p><code>@Override
+public void onCreate() {
+    BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
+        int scale = -1;
+        int level = -1;
+        int voltage = -1;
+        int temp = -1;
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            temp = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1);
+            voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
+            Log.e("BatteryManager", "level is "+level+"/"+scale+", temp is "+temp+", voltage is "+voltage);
+        }
+    };
+    IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+    registerReceiver(batteryReceiver, filter);
+}</code></p>
+
+<h3>
 <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
 
 <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
